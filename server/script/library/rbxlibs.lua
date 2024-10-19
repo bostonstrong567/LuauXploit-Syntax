@@ -2,6 +2,7 @@ local json = require 'json'
 local lang = require 'language'
 local rojo = require 'library.rojo'
 local util = require 'utility'
+
 local defaultlibs
 
 local m = {}
@@ -903,6 +904,53 @@ local function parseDocumentaion()
     end
 end
 
+local function ParseSyntax()
+    -- Load your custom syntax definitions from syntax.lua
+    local syntaxLuaPath = ROOT / "def" / "syntax.lua"
+    local syntaxState = require("parser"):compile(util.loadFile(syntaxLuaPath), "lua")
+
+    -- Load your custom syntax descriptions from syntax.json
+    local syntaxJsonPath = ROOT / "def" / "syntax.json"
+    local syntaxJsonContent = util.loadFile(syntaxJsonPath)
+    local syntaxDescriptions = {}
+
+    if syntaxJsonContent then
+        syntaxDescriptions = json.decode(syntaxJsonContent)
+    end
+
+    if syntaxState and syntaxState.ast.types then
+        for _, typeDef in ipairs(syntaxState.ast.types[1].value) do
+            local typeName = typeDef.key[1]
+            local typeValue = typeDef.value
+
+            -- If it's a table with function definitions
+            if typeValue.type == "type.table" then
+                for _, member in ipairs(typeValue) do
+                    if member.type == "type.field" and member.key and member.value then
+                        local functionName = member.key[1]
+                        local description = syntaxDescriptions[functionName]
+
+                        if description then
+                            -- Attach the description to the function's metadata
+                            member.description = description
+                        end
+
+                        -- Add the function to the global scope
+                        m.global[functionName] = {
+                            name = functionName,
+                            type = "type.library",
+                            value = member.value,
+                            description = description,
+                        }
+
+                        util.setTypeParent(m.global[functionName])
+                    end
+                end
+            end
+        end
+    end
+end
+
 local function setChildParent(obj, parent)
     if obj.kind ~= "child" then
         return
@@ -1063,6 +1111,9 @@ function m.init()
     parseEnums()
     parseDocumentaion()
     buildDataModel()
+
+    -- Call the ParseSyntax function to load custom syntax
+    ParseSyntax()
 
     require("vm").flushCache()
 end

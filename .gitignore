@@ -2,4 +2,5 @@
 /server/bin
 /server/script/output.lua
 /client/node_modules
+/node_modules
 TODO-LIST

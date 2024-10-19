@@ -291,7 +291,7 @@ local function askForDisable()
         proto.notify('$/command', {
             command   = 'lua.config',
             data      = {
-                key    = 'robloxLsp.diagnostics.workspaceDelay',
+                key    = 'luauxploit.diagnostics.workspaceDelay',
                 action = 'set',
                 value  = delay * 1000,
             }
@@ -300,7 +300,7 @@ local function askForDisable()
         proto.notify('$/command', {
             command   = 'lua.config',
             data      = {
-                key    = 'robloxLsp.diagnostics.workspaceDelay',
+                key    = 'luauxploit.diagnostics.workspaceDelay',
                 action = 'set',
                 value  = -1,
             }

@@ -28,7 +28,7 @@ local function updateConfig(init)
         items = {
             {
                 scopeUri = workspace.uri,
-                section = 'robloxLsp',
+                section = 'luauxploit',
             },
             {
                 scopeUri = workspace.uri,
@@ -136,7 +136,7 @@ proto.on('initialize', function (params)
     return {
         capabilities = cap.getIniter(),
         serverInfo   = {
-            name    = 'nightrains.robloxlsp',
+            name    = 'Bostonstrong567.luauxploit',
         },
     }
 end)

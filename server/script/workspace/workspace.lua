@@ -211,7 +211,7 @@ local function loadFileFactory(root, progressData, isLibrary)
                             proto.notify('$/command', {
                                 command   = 'lua.config',
                                 data      = {
-                                    key    = 'robloxLsp.workspace.maxPreload',
+                                    key    = 'luauxploit.workspace.maxPreload',
                                     action = 'set',
                                     value  = config.config.workspace.maxPreload + math.max(1000, config.config.workspace.maxPreload),
                                 }

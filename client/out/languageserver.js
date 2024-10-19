@@ -17,10 +17,12 @@ const vscode = require("vscode");
 const vscode_1 = require("vscode");
 const node_1 = require("vscode-languageclient/node");
 const express = require("express");
+
 let defaultClient;
 let clients = new Map();
+
 function registerCustomCommands(context) {
-    context.subscriptions.push(vscode_1.commands.registerCommand('lua.config', (data) => {
+    context.subscriptions.push(vscode_1.commands.registerCommand('luauxploit.config', (data) => {
         let config = vscode_1.workspace.getConfiguration(undefined, vscode_1.Uri.parse(data.uri));
         if (data.action == 'add') {
             let value = config.get(data.key);
@@ -34,7 +36,9 @@ function registerCustomCommands(context) {
         }
     }));
 }
+
 let _sortedWorkspaceFolders;
+
 function sortedWorkspaceFolders() {
     if (_sortedWorkspaceFolders === void 0) {
         _sortedWorkspaceFolders = vscode_1.workspace.workspaceFolders ? vscode_1.workspace.workspaceFolders.map(folder => {
@@ -49,7 +53,9 @@ function sortedWorkspaceFolders() {
     }
     return _sortedWorkspaceFolders;
 }
+
 vscode_1.workspace.onDidChangeWorkspaceFolders(() => _sortedWorkspaceFolders = undefined);
+
 function getOuterMostWorkspaceFolder(folder) {
     let sorted = sortedWorkspaceFolders();
     for (let element of sorted) {
@@ -63,10 +69,11 @@ function getOuterMostWorkspaceFolder(folder) {
     }
     return folder;
 }
+
 function start(context, documentSelector, folder) {
     // Options to control the language client
     let clientOptions = {
-        // Register the server for plain text documents
+        // Register the server for Lua documents
         documentSelector: documentSelector,
         workspaceFolder: folder,
         progressOnInitialization: true,
@@ -74,11 +81,13 @@ function start(context, documentSelector, folder) {
             isTrusted: true,
         },
     };
+
     let config = vscode_1.workspace.getConfiguration(undefined, folder);
-    let develop = config.get("robloxLsp.develop.enable");
-    let debuggerPort = config.get("robloxLsp.develop.debuggerPort");
-    let debuggerWait = config.get("robloxLsp.develop.debuggerWait");
-    let commandParam = config.get("robloxLsp.misc.parameters");
+    let develop = config.get("luauxploit.develop.enable");
+    let debuggerPort = config.get("luauxploit.develop.debuggerPort");
+    let debuggerWait = config.get("luauxploit.develop.debuggerWait");
+    let commandParam = config.get("luauxploit.misc.parameters");
+
     let command;
     let platform = os.platform();
     switch (platform) {
@@ -94,6 +103,7 @@ function start(context, documentSelector, folder) {
             fs.chmodSync(command, '777');
             break;
     }
+
     let serverOptions = {
         command: command,
         args: [
@@ -105,7 +115,8 @@ function start(context, documentSelector, folder) {
             commandParam,
         ]
     };
-    let client = new node_1.LanguageClient('Lua', 'Lua', serverOptions, clientOptions);
+
+    let client = new node_1.LanguageClient('LuauXploit', 'LuauXploit Syntax', serverOptions, clientOptions);
     client.registerProposedFeatures();
     client.start().then(() => {
         onCommand(client);
@@ -114,9 +125,12 @@ function start(context, documentSelector, folder) {
         statusBar(client);
         startPluginServer(client);
     });
+
     return client;
 }
+
 let server;
+
 function startPluginServer(client) {
     try {
         let lastUpdate = "";
@@ -157,23 +171,25 @@ function startPluginServer(client) {
         app.get("/last", (req, res) => {
             res.send(lastUpdate);
         });
-        let port = vscode.workspace.getConfiguration().get("robloxLsp.misc.serverPort");
+        let port = vscode.workspace.getConfiguration().get("luauxploit.misc.serverPort");
         if (port > 0) {
             server = app.listen(port, () => {
-                // vscode.window.showInformationMessage(`Started Roblox LSP Plugin Server on port ${port}`);
+                // vscode.window.showInformationMessage(`Started LuauXploit Plugin Server on port ${port}`);
             });
         }
     }
     catch (err) {
-        vscode.window.showErrorMessage(`Failed to launch Roblox LSP plugin server: ${err}`);
+        vscode.window.showErrorMessage(`Failed to launch LuauXploit plugin server: ${err}`);
     }
 }
+
 let barCount = 0;
+
 function statusBar(client) {
     let bar = vscode_1.window.createStatusBarItem();
-    bar.text = 'Roblox LSP';
+    bar.text = 'LuauXploit';
     barCount++;
-    bar.command = 'Lua.statusBar:' + barCount;
+    bar.command = 'LuauXploit.statusBar:' + barCount;
     vscode_1.commands.registerCommand(bar.command, () => {
         client.sendNotification('$/status/click');
     });
@@ -188,11 +204,13 @@ function statusBar(client) {
         bar.tooltip = params.tooltip;
     });
 }
+
 function onCommand(client) {
     client.onNotification('$/command', (params) => {
         vscode_1.commands.executeCommand(params.command, params.data);
     });
 }
+
 function onState(client, context) {
     client.onRequest('$/getState', (params) => {
         return context.globalState.get(params.key, null);
@@ -201,18 +219,18 @@ function onState(client, context) {
         context.globalState.update(params.key, params.value);
     });
 }
+
 function isDocumentInClient(textDocuments, client) {
     let selectors = client.clientOptions.documentSelector;
     if (!node_1.DocumentSelector.is(selectors)) {
-        {
-            return false;
-        }
+        return false;
     }
     if (vscode.languages.match(selectors, textDocuments)) {
         return true;
     }
     return false;
 }
+
 function onDecorations(client) {
     let textType = vscode_1.window.createTextEditorDecorationType({});
     function notifyVisibleRanges(textEditor) {
@@ -306,10 +324,12 @@ function onDecorations(client) {
         }
     });
 }
+
 function activate(context) {
     registerCustomCommands(context);
+
     function didOpenTextDocument(document) {
-        // We are only interested in language mode text
+        // We are only interested in Lua documents
         if (document.languageId !== 'lua' || (document.uri.scheme !== 'file' && document.uri.scheme !== 'untitled')) {
             return;
         }
@@ -335,6 +355,7 @@ function activate(context) {
             clients.set(folder.uri.toString(), client);
         }
     }
+
     function didCloseTextDocument(document) {
         let uri = document.uri;
         if (clients.has(uri.toString())) {
@@ -345,6 +366,7 @@ function activate(context) {
             }
         }
     }
+
     if (vscode_1.workspace.workspaceFolders != null) {
         vscode_1.workspace.workspaceFolders.forEach(folder => {
             folder = getOuterMostWorkspaceFolder(folder);
@@ -357,8 +379,8 @@ function activate(context) {
             }
         });
     }
+
     vscode_1.workspace.onDidOpenTextDocument(didOpenTextDocument);
-    //Workspace.onDidCloseTextDocument(didCloseTextDocument);
     vscode_1.workspace.textDocuments.forEach(didOpenTextDocument);
     vscode_1.workspace.onDidChangeWorkspaceFolders((event) => {
         for (let folder of event.removed) {
@@ -370,7 +392,9 @@ function activate(context) {
         }
     });
 }
+
 exports.activate = activate;
+
 function deactivate() {
     if (server != undefined) {
         server.close();
@@ -385,5 +409,5 @@ function deactivate() {
     }
     return Promise.all(promises).then(() => undefined);
 }
+
 exports.deactivate = deactivate;
-//# sourceMappingURL=languageserver.js.map

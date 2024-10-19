@@ -11,7 +11,7 @@ const fetchData = async (url: string, handler: (data: string) => void, resolve?:
             .then(body => handler(body))
             .then(resolve);
     } catch (err) {
-        vscode.window.showErrorMessage(`Roblox LSP Error: ${err}`);
+        vscode.window.showErrorMessage(`luauxploit Error: ${err}`);
         if (resolve != undefined) {
             resolve();
         }
@@ -22,7 +22,7 @@ function writeToFile(path: string, content: string) {
     try {
         fs.writeFileSync(path, content);
     } catch (err) {
-        vscode.window.showErrorMessage(`Roblox LSP Error: ${err}`);
+        vscode.window.showErrorMessage(`luauxploit Error: ${err}`);
     }
 }
 
@@ -33,7 +33,7 @@ function updateRobloxAPI(context: vscode.ExtensionContext) {
             if (currentVersion != lastVersion) {
                 vscode.window.withProgress({
                     location: vscode.ProgressLocation.Notification,
-                    title: 'Roblox LSP: Updating API',
+                    title: 'luauxploit: Updating API',
                     cancellable: false
                 }, async () => {
                     return Promise.all([
@@ -50,7 +50,7 @@ function updateRobloxAPI(context: vscode.ExtensionContext) {
                         })
                     ]);
                 }).then(() => {
-                    vscode.window.showInformationMessage(`Roblox LSP: Updated API (${lastVersion}). [View changes](https://maximumadhd.github.io/Roblox-API-History)`, "Reload VSCode").then(async (item) => {
+                    vscode.window.showInformationMessage(`luauXploit: Updated API (${lastVersion}). [View changes](https://maximumadhd.github.io/Roblox-API-History)`, "Reload VSCode").then(async (item) => {
                         if (item == "Reload VSCode") {
                             vscode.commands.executeCommand('workbench.action.reloadWindow');
                         }
@@ -67,8 +67,8 @@ function updateRobloxAPI(context: vscode.ExtensionContext) {
 async function openUpdatesWindow(context: vscode.ExtensionContext) {
     if (context.globalState.get("sawVersionLogNew14", false) == false) {
         const panel = vscode.window.createWebviewPanel(
-            'robloxlspUpdates',
-            'Roblox LSP Updates',
+            'luauxploitUpdates',
+            'luauXploit Updates',
             vscode.ViewColumn.One,
             {}
         );
@@ -81,27 +81,10 @@ async function openUpdatesWindow(context: vscode.ExtensionContext) {
         <body>
             <div style="position:relative; padding-left:100px; padding-right:100px">
                 <center><img src="https://i.imgur.com/PH5u9QD.png", witdh="300" height="300"></center>
-                <h1 style="font-size:3rem; font-weight:100">Roblox LSP Release Notes!</h1>
-                <p style="font-size:1rem">More info: <a href="https://devforum.roblox.com/t/roblox-lsp-full-intellisense-for-roblox-and-luau/717745">https://devforum.roblox.com/t/roblox-lsp-full-intellisense-for-roblox-and-luau/717745</a></p>
-                <p style="font-size:1rem">Report any bug or question here: <a href="https://github.com/NightrainsRbx/RobloxLsp/issues">https://github.com/NightrainsRbx/RobloxLsp/issues</a></p>
+                <h1 style="font-size:3rem; font-weight:100">luauXploit Release Notes!</h1>
                 <hr style="height:2px;border:none;color:#333;background-color:#333;"/>
-                <h2 style="font-size:2rem; font-weight:100">v1.5.7</h2>
-                <li style="font-size:1rem">Syntax support for boolean singleton types.</li>
-                <li style="font-size:1rem">Syntax support for default type parameters.</li>
-                <li style="font-size:1rem">Added Vector2 and CFrame constants (thanks to <a href="https://github.com/ykh09242">@ykh09242</a>, <a href="https://github.com/NightrainsRbx/RobloxLsp/pull/145">#150</a>)</li>
-                <li style="font-size:1rem">Added task.cancel and coroutine.close (thanks to <a href="https://github.com/Baileyeatspizza">@Baileyeatspizza</a>, <a href="https://github.com/NightrainsRbx/RobloxLsp/pull/145">#151</a>)</li>
-                <li style="font-size:1rem">By default, all rojo project files found will be loaded and merged into one, change robloxLsp.workspace.rojoProjectFile if you prefer to use a specific one.</li>
-                <h2 style="font-size:2rem; font-weight:100">v1.5.6</h2>
+                <li style="font-size:1rem">By default, all rojo project files found will be loaded and merged into one, change luauxploit.workspace.rojoProjectFile if you prefer to use a specific one.</li>
                 <li style="font-size:1rem">Improved syntax support for Luau.</li>
-                <li style="font-size:1rem">Added basic syntax support for generic type packs and singleton types.</li>
-                <li style="font-size:1rem">Implemented suggeted imports for modules (thanks to <a href="https://github.com/Corecii">@Corecii</a>, <a href="https://github.com/NightrainsRbx/RobloxLsp/pull/123">#123</a>)</li>
-                <li style="font-size:1rem">Added Vector3 constants (thanks to <a href="https://github.com/aku-e">@aku-e</a>, <a href="https://github.com/NightrainsRbx/RobloxLsp/pull/145">#145</a>)</li>
-                <li style="font-size:1rem">Color3.fromHex is no longer deprecated.</li>
-                <li style="font-size:1rem">Fixed deprecated classes not having typings. (<a href="https://github.com/NightrainsRbx/RobloxLsp/issues/147">#147</a>)</li>
-                <li style="font-size:1rem">Fixed embedded rojo projects not using their correct root name. (<a href="https://github.com/NightrainsRbx/RobloxLsp/issues/128">#128</a>)</li>
-                <li style="font-size:1rem">Inlay hints are not displayed if the type is "none" or "any".</li>
-                <li style="font-size:1rem">Fixed diagnostics for type aliases with the same names as built-in types.</li>
-                <li style="font-size:1rem">Updated binaries.</li>
             </div>
         </body>
         </html>`;
@@ -112,13 +95,13 @@ async function openUpdatesWindow(context: vscode.ExtensionContext) {
 export function activate(context: vscode.ExtensionContext) {
     try {
         if (vscode.extensions.getExtension("sumneko.lua") != undefined) {
-            vscode.window.showErrorMessage("The extension [Lua](https://marketplace.visualstudio.com/items?itemName=sumneko.lua) by sumneko is enabled, please disable it so that Roblox LSP can work properly.");
+            vscode.window.showErrorMessage("The extension [Lua](https://marketplace.visualstudio.com/items?itemName=sumneko.lua) by sumneko is enabled, please disable it so that Roblox LSP can work properly. or others");
         }
     } catch (err) {
         vscode.window.showErrorMessage(err);
     }
 
-    openUpdatesWindow(context);
+    // openUpdatesWindow(context);
 
     updateRobloxAPI(context);
 

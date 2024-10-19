@@ -89,10 +89,10 @@ function start(context: ExtensionContext, documentSelector: DocumentSelector, fo
     };
 
     let config = Workspace.getConfiguration(undefined, folder);
-    let develop: boolean = config.get("robloxLsp.develop.enable");
-    let debuggerPort: number = config.get("robloxLsp.develop.debuggerPort");
-    let debuggerWait: boolean = config.get("robloxLsp.develop.debuggerWait");
-    let commandParam: string = config.get("robloxLsp.misc.parameters");
+    let develop: boolean = config.get("luauxploit.develop.enable");
+    let debuggerPort: number = config.get("luauxploit.develop.debuggerPort");
+    let debuggerWait: boolean = config.get("luauxploit.develop.debuggerWait");
+    let commandParam: string = config.get("luauxploit.misc.parameters");
     let command: string;
     let platform: string = os.platform();
     switch (platform) {

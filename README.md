@@ -1,21 +1,8 @@
 # Roblox Luau Language Server
 
-[Original Project](https://github.com/sumneko/lua-language-server) by [sumneko](https://github.com/sumneko)
+[Original Project](https://github.com/NightrainsRbx/RobloxLsp) by [Nightrains](https://github.com/NightrainsRbx)
 
-Make sure you don't have both [Lua](https://marketplace.visualstudio.com/items?itemName=sumneko.lua) by sumneko and Roblox LSP enabled.
-
-## Install In VSCode
-https://marketplace.visualstudio.com/items?itemName=Nightrains.robloxlsp
-
-## More Info 
-https://devforum.roblox.com/t/roblox-lsp-full-intellisense-for-roblox-and-luau/717745
-
-## Get Help
-
-Roblox OS Community Discord Server: https://discord.gg/c4nPcZHwFU
-
-## Alternatives
-This project doesn't support Luau static typing and never will, you should always prefer [Luau Language Server](https://marketplace.visualstudio.com/items?itemName=JohnnyMorganz.luau-lsp) for that.
+Make sure you don't have both [Lua](https://marketplace.visualstudio.com/items?itemName=sumneko.lua) by sumneko and Roblox LSP enabled or any others.
 
 ## Features
 
@@ -42,20 +29,8 @@ This project doesn't support Luau static typing and never will, you should alway
 - Multi Workspace
 - Semantic Tokens
 
-### Preview
-
-![avatar](https://i.imgur.com/4sgYDii.gif)
-![avatar](https://i.imgur.com/vHbKIJ0.gif)
-![avatar](https://cdn.discordapp.com/attachments/434146484758249482/778145929345368064/test.gif)
-
-## Build
-
-You can download the extension with precompiled binaries here: https://github.com/NightrainsRbx/RobloxLsp/releases
-
-If you need to build your own binaries, follow the instructions at https://github.com/sumneko/lua-language-server
-
 ## Credit
-
+* [Original Project](https://github.com/NightrainsRbx/RobloxLsp)
 * [lua-language-server](https://github.com/sumneko/lua-language-server)
 * [vscode-luau](https://github.com/Dekkonot/vscode-luau)
 * [bee.lua](https://github.com/actboy168/bee.lua)
@@ -73,7 +48,7 @@ If you need to build your own binaries, follow the instructions at https://githu
 * [json.lua](https://github.com/actboy168/json.lua)
 
 ## Acknowledgement
-
+* [Nightrains](https://github.com/NightrainsRbx)
 * [sumneko](https://github.com/sumneko)
 * [actboy168](https://github.com/actboy168)
 * [Dekkonot](https://github.com/Dekkonot)

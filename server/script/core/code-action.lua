@@ -72,7 +72,7 @@ local function disableDiagnostic(uri, code, start, results)
             command  = 'lua.config',
             arguments = {
                 {
-                    key    = 'robloxLsp.diagnostics.disable',
+                    key    = 'luauxploit.diagnostics.disable',
                     action = 'add',
                     value  = code,
                     uri    = uri,
@@ -109,7 +109,7 @@ local function markGlobal(uri, name, results)
             command   = 'lua.config',
             arguments = {
                 {
-                    key    = 'robloxLsp.diagnostics.globals',
+                    key    = 'luauxploit.diagnostics.globals',
                     action = 'add',
                     value  = name,
                     uri    = uri,
@@ -128,7 +128,7 @@ local function changeVersion(uri, version, results)
             command   = 'lua.config',
             arguments = {
                 {
-                    key    = 'robloxLsp.runtime.version',
+                    key    = 'luauxploit.runtime.version',
                     action = 'set',
                     value  = version,
                     uri    = uri,
